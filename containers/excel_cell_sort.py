@@ -1,10 +1,10 @@
-""" Sort the content of an list in a natural way
+""" Sort the content of an list containing excel cells
 
-> l = ["A2", "A10", "A1", "A3"]
+> l = ["A2", "A10", "AA3", "AB1"]
 > sorted(l)
-['A1', 'A10', 'A2', 'A3']
-> natural_sort(l)
-['A1', 'A2', 'A3', 'A10']
+['A10', 'A2', 'AA3', 'AB1']
+> excel_cell_sort(l)
+['A2', 'A10', 'AA3', 'AB1']
 
 from http://www.codinghorror.com/blog/2007/12/sorting-for-humans-natural-sort-order.html
 """
@@ -26,5 +26,13 @@ def _nartural_sort_alphanum_key(text):
     )
 
 
-def natural_sort(iterable):
-    return sorted(iterable, key=_nartural_sort_alphanum_key)
+def _excel_cell_sort_key(cell):
+    nat_sort_result = _nartural_sort_alphanum_key(cell)
+    column, row = nat_sort_result[:2]
+    return tuple((len(column), column, row))
+
+
+def excel_cell_sort(iterable):
+    return sorted(iterable, key=_excel_cell_sort_key)
+
+
